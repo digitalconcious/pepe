@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Logos</title>
+    <style>
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Logo Generator</h1>
+    <div>
+        <canvas id="logo192" width="192" height="192"></canvas>
+        <canvas id="logo512" width="512" height="512"></canvas>
+        <canvas id="favicon" width="64" height="64"></canvas>
+    </div>
+    <div>
+        <button onclick="downloadLogos()">Download Logos</button>
+    </div>
+
+    <script>
+        function drawLogo(canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            
+            // Draw leaf shape
+            ctx.beginPath();
+            ctx.moveTo(size/2, size/16);
+            ctx.quadraticCurveTo(size*3/4, size/4, size*3/4, size/2);
+            ctx.quadraticCurveTo(size*3/4, size*3/4, size/2, size*15/16);
+            ctx.quadraticCurveTo(size/4, size*3/4, size/4, size/2);
+            ctx.quadraticCurveTo(size/4, size/4, size/2, size/16);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fill();
+            
+            // Draw stem
+            ctx.beginPath();
+            ctx.moveTo(size/2, size*15/16);
+            ctx.lineTo(size/2, size*2/3);
+            ctx.strokeStyle = '#2E7D32';
+            ctx.lineWidth = size/16;
+            ctx.stroke();
+            
+            // Draw letter P
+            ctx.font = `bold ${size/2}px Arial`;
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('P', size/2, size/2);
+        }
+
+        function downloadLogos() {
+            const canvases = {
+                'logo192.png': document.getElementById('logo192'),
+                'logo512.png': document.getElementById('logo512'),
+                'favicon.ico': document.getElementById('favicon')
+            };
+
+            Object.entries(canvases).forEach(([filename, canvas]) => {
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL(filename.includes('ico') ? 'image/x-icon' : 'image/png');
+                link.click();
+            });
+        }
+
+        // Draw logos when page loads
+        window.onload = function() {
+            drawLogo(document.getElementById('logo192'));
+            drawLogo(document.getElementById('logo512'));
+            drawLogo(document.getElementById('favicon'));
+        };
+    </script>
+</body>
+</html> 
